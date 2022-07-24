@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 
 const table = {
   sports: 21,
@@ -32,7 +32,7 @@ const AppProvider = ({ children }) => {
   const fetchQuestions = async (url) => {
     setLoading(true);
     setWaiting(false);
-    const response = await axios.get(url).catch((error) => console.log(error));
+    const response = await axios(url).catch((error) => console.log(error));
 
     if (response) {
       const data = response.data.results;
@@ -41,6 +41,9 @@ const AppProvider = ({ children }) => {
         setLoading(false);
         setWaiting(false);
         setError(false);
+      } else {
+        setWaiting(true);
+        setError(true);
       }
     } else {
       setWaiting(true);
@@ -77,8 +80,7 @@ const AppProvider = ({ children }) => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
+    let { name, value } = e.target;
     setQuiz({ ...quiz, [name]: value });
   };
 
